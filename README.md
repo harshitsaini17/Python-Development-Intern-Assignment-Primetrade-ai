@@ -196,6 +196,7 @@ The bot handles the following error scenarios:
 - Quantity precision is not validated client-side — the Binance API will reject invalid precision. The user should check the exchange info for symbol-specific lot size filters.
 - All orders use USDT-M (linear) contracts.
 - The `STOP` order type maps to Binance's stop-limit order (requires both `stopPrice` and `price`).
+- **Testnet Limitation**: STOP/conditional orders (STOP, STOP_MARKET, TAKE_PROFIT) return error `-4120` on the Binance Futures Testnet because it requires the Algo Order API which is not available on testnet. MARKET and LIMIT orders work perfectly. STOP orders are implemented in the code and will work on production Binance Futures.
 
 ## License
 

@@ -55,7 +55,10 @@ class OrderManager:
         logger.info(f"Sending order to Binance: {params}")
 
         try:
-            response = self.client.place_order(**params)
+            if validated["type"] == "STOP":
+                response = self.client.place_stop_order(**params)
+            else:
+                response = self.client.place_order(**params)
         except BinanceAPIError as e:
             logger.error(f"Binance API error: {e}")
             raise
@@ -95,17 +98,20 @@ def format_order_summary(
 def format_order_response(response: dict) -> str:
     fields = {
         "orderId": "Order ID",
+        "algoOrderId": "Algo Order ID",
         "symbol": "Symbol",
         "status": "Status",
         "side": "Side",
         "type": "Type",
         "quantity": "Original Qty",
+        "origQty": "Original Qty",
         "price": "Price",
         "stopPrice": "Stop Price",
         "executedQty": "Executed Qty",
         "avgPrice": "Avg Price",
         "timeInForce": "Time in Force",
         "updateTime": "Update Time",
+        "clientOrderId": "Client Order ID",
     }
 
     lines = [

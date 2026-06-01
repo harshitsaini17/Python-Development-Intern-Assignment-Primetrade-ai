@@ -99,6 +99,13 @@ class BinanceFuturesClient:
         logger.info(f"Placing order: {kwargs}")
         return self._request("POST", "/fapi/v1/order", params=kwargs)
 
+    def place_stop_order(self, **kwargs) -> dict:
+        logger.info(f"Placing stop order: {kwargs}")
+        params = dict(kwargs)
+        params.setdefault("workingType", "CONTRACT_PRICE")
+        params.setdefault("closePosition", "false")
+        return self._request("POST", "/fapi/v1/order", params=params)
+
     def get_exchange_info(self) -> dict:
         return self._request("GET", "/fapi/v1/exchangeInfo", signed=False)
 
